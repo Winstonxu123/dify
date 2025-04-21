@@ -134,6 +134,10 @@ class QdrantVector(BaseVector):
                 self._client.create_payload_index(
                     collection_name, Field.DOC_ID.value, field_schema=PayloadSchemaType.KEYWORD
                 )
+                # create document_id payload index
+                self._client.create_payload_index(
+                    collection_name, Field.DOCUMENT_ID.value, field_schema=PayloadSchemaType.KEYWORD
+                )
                 # create full text index
                 text_index_params = TextIndexParams(
                     type=TextIndexType.TEXT,
@@ -440,7 +444,7 @@ class QdrantVectorFactory(AbstractVectorFactory):
             if dataset_collection_binding:
                 collection_name = dataset_collection_binding.collection_name
             else:
-                raise ValueError("Dataset Collection Bindings is not exist!")
+                raise ValueError("Dataset Collection Bindings does not exist!")
         else:
             if dataset.index_struct_dict:
                 class_prefix: str = dataset.index_struct_dict["vector_store"]["class_prefix"]
